@@ -16,19 +16,25 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     const addItemQuery = `INSERT INTO "item" ("description", "image_url", "user_id") VALUES ($1, $2, $3);`;
     pool.query(addItemQuery).then(() => {
-        res.sendStatus(201);
+        res.sendStatus(201); // respond CREATED
     }).catch(error => {
         console.log('Error with INSERT item query,', error);
         res.sendStatus(500);
     })
 });
 
-
+// url: api/shelf?itemID=${item id here }&userID{user id here}
 /**
  * Delete an item if it's something the logged in user added
  */
-router.delete('/:id', (req, res) => {
-
+router.delete('/', (req, res) => {
+    const deleteItemQuery = `DELETE FROM "item" WHERE "item"."id"=$1 AND "item"."user_id"=2;`;
+    pool.query(deleteItemQuery, [req.query.itemID, req.query.userID]).then(() => {
+        res.sendStatus(200); // response OK
+    }).catch(error => {
+        console.log('Error with DELETE item query,', error);
+        res.sendStatus(500);
+    });
 });
 
 
