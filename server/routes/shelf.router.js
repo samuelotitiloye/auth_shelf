@@ -14,7 +14,13 @@ router.get('/', (req, res) => {
  * Add an item for the logged in user to the shelf
  */
 router.post('/', (req, res) => {
-
+    const addItemQuery = `INSERT INTO "item" ("description", "image_url", "user_id") VALUES ($1, $2, $3);`;
+    pool.query(addItemQuery).then(() => {
+        res.sendStatus(201);
+    }).catch(error => {
+        console.log('Error with INSERT item query,', error);
+        res.sendStatus(500);
+    })
 });
 
 
