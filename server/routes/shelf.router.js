@@ -5,8 +5,14 @@ const router = express.Router();
 /**
  * Get all of the items on the shelf
  */
-router.get('/', (req, res) => {
-    res.sendStatus(200); // For testing only, can be removed
+router.get('/', async(req, res) => {
+    const getItemsQuery = `SELECT * FROM "item" ORDER BY "id" ASC;`
+    try {
+        const getItemsData = await pool.query(getItemsQuery);
+        res.send(getItemsData.rows);
+    } catch (error) {
+        console.log('Error with get server route:', error);
+    }
 });
 
 
